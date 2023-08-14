@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-acc
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: blue-acc
+  sources:
+  - repoURL: https://github.com/mojtabaimani/sodeko-blue-services.git
+    path: app-values/hello/overlays/acc
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: blue-acc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

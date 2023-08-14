@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-tst
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: blue-tst
+  sources:
+  - repoURL: https://github.com/mojtabaimani/sodeko-blue-services.git
+    path: app-values/hello/overlays/tst
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: blue-tst
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
